@@ -1,13 +1,4 @@
-class Friend {
-  constructor(id, { firstName, lastName, gender, email, contacts }) {
-    this.id = id;
-    this.firstName = firstName;
-    this.lastName = lastName;
-    this.gender = gender;
-    this.email = email;
-    this.contacts = contacts;
-  }
-}
+import { Friends, Aliens } from "./dbConnectors";
 
 // resolver map
 export const resolvers = {
@@ -20,17 +11,23 @@ export const resolvers = {
   Mutation: {
     createFriend: (root, { input }) => {
       const newFriend = new Friends({
-      firstName = input.firstName,
-      lastName = input.lastName,
-      gender = input.gender,
-      email = input.email,
-    });
-    newFriend.id = newFriend._id;
+        firstName: input.firstName,
+        lastName: input.lastName,
+        gender: input.gender,
+        language: input.language,
+        age: input.age,
+        email: input.email,
+        contacts: input.contacts,
+      });
 
-    return new Promise((resolve, object) => {
-      if (err) reject(err)
-      else resolve(newFriend)
-    })
+      newFriend.id = newFriend._id;
+
+      return new Promise((resolve, object) => {
+        newFriend.save((err) => {
+          if (err) reject(err);
+          else resolve(newFriend);
+        });
+      });
     },
   },
 };
